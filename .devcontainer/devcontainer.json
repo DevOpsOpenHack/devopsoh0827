@@ -1,0 +1,90 @@
+{
+	// https://code.visualstudio.com/docs/remote/devcontainerjson-reference
+	"name": "DevOps OpenHack",
+	"image": "mcr.microsoft.com/vscode/devcontainers/universal:latest",
+
+	//"runArgs": [ "--cap-add=SYS_PTRACE", "--security-opt", "seccomp=unconfined" ],
+	// Docker in docker
+	"mounts": [
+		"source=/var/run/docker.sock,target=/var/run/docker.sock,type=bind"
+	],
+	// Set *default* container specific settings.json values on container create.
+	"settings": {
+		"go.toolsManagement.checkForUpdates": "local",
+		"go.useLanguageServer": true,
+		"go.gopath": "/go",
+		"python.defaultInterpreterPath": "/opt/python/latest/bin/python",
+		"python.linting.enabled": true,
+		"python.linting.pylintEnabled": true,
+		"python.formatting.autopep8Path": "/usr/local/py-utils/bin/autopep8",
+		"python.formatting.blackPath": "/usr/local/py-utils/bin/black",
+		"python.formatting.yapfPath": "/usr/local/py-utils/bin/yapf",
+		"python.linting.banditPath": "/usr/local/py-utils/bin/bandit",
+		"python.linting.flake8Path": "/usr/local/py-utils/bin/flake8",
+		"python.linting.mypyPath": "/usr/local/py-utils/bin/mypy",
+		"python.linting.pycodestylePath": "/usr/local/py-utils/bin/pycodestyle",
+		"python.linting.pydocstylePath": "/usr/local/py-utils/bin/pydocstyle",
+		"python.linting.pylintPath": "/usr/local/py-utils/bin/pylint",
+		"lldb.executable": "/usr/bin/lldb",
+		"files.watcherExclude": {
+			"**/target/**": true
+		}
+	},
+	"remoteUser": "codespace",
+	"overrideCommand": false,
+	"mounts": ["source=codespaces-linux-var-lib-docker,target=/var/lib/docker,type=volume"],
+	"runArgs": [
+		"--cap-add=SYS_PTRACE",
+		"--security-opt",
+		"seccomp=unconfined",
+		"--privileged",
+		"--init"
+	],
+	// Add the IDs of extensions you want installed when the container is created.
+	"extensions": [
+		"redhat.vscode-yaml",
+		"github.vscode-pull-request-github",
+		"ms-vscode.azure-account",
+		"ms-azuretools.vscode-azureappservice",
+		"golang.go",
+		"vscjava.vscode-java-pack",
+		"hashicorp.terraform",
+		"ms-azuretools.vscode-docker",
+		"ms-vscode.vscode-node-azure-pack",
+		"ms-azuretools.vscode-azureterraform",
+		"msjsdiag.debugger-for-edge",
+		"ms-azuretools.vscode-azureresourcegroups",
+		"ms-vscode.azurecli",
+		"ms-azure-devops.azure-pipelines",
+		"ms-azuretools.vscode-bicep",
+		"vscjava.vscode-maven",
+		"ms-python.python",
+		"ms-dotnettools.csharp",
+		"ms-vscode-remote.remote-wsl",
+		"ms-vscode-remote.remote-containers",
+		"visualstudioexptteam.vscodeintellicode",
+		"ms-vsliveshare.vsliveshare",
+		"github.codespaces",
+		"github.remotehub",
+		"ms-python.vscode-pylance"
+
+	],
+
+	"features": {
+		"azure-cli": "latest",
+		"terraform": {
+			"version": "latest",
+			"tflint": "latest",
+			"terragrunt": "latest"
+		}
+	},
+	
+	// Use 'forwardPorts' to make a list of ports inside the container available locally.
+	// "forwardPorts": [],
+
+	// "oryx build" will automatically install your dependencies and attempt to build your project
+	// "postCreateCommand": "oryx build -p virtualenv_name=.venv --log-file /tmp/oryx-build.log --manifest-dir /tmp || echo 'Could not auto-build. Skipping.'"
+//	"postCreateCommand": "/usr/bin/wget -O /tmp/installcli.sh https://aka.ms/InstallAzureCLIDeb && sudo bash /tmp/installcli.sh && /usr/bin/az bicep install && /usr/bin/az extension add --name azure-devops"
+	"postCreateCommand": "/usr/bin/az bicep install && az /usr/bin/az extension add --name azure-devops"
+
+}
