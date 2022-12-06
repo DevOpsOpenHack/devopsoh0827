@@ -17,3 +17,5 @@ dotnet test --no-build --filter "FullyQualifiedName~IntegrationTests" --logger "
 
 # run all tests
 dotnet test --no-build
+
+#test
