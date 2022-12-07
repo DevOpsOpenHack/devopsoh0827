@@ -25,6 +25,7 @@ jobs:
     runs-on: ubuntu-latest
     name: "Validate"
     steps:
+      - uses: actions/checkout@v3
       - shell: bash
         run: |
           ls -als
