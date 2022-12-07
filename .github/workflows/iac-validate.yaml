@@ -1,6 +1,12 @@
+on:
+  pull_request:
+    branches: [ main ]
+    types: [opened, reopened, review_requested]
+
 jobs:
-  job1:
-    name: "Job 1"
+  getResourcePrefix:
+    runs-on: ubuntu-latest
+    name: "Get resource prefix"
     outputs:
       # Set output for next job
       RESOURCES_PREFIX: ${{ steps.resources_prefix.outputs.result }}
@@ -14,6 +20,7 @@ jobs:
           script: return context.repo.repo.toLowerCase()
 
   validate:
+    runs-on: ubuntu-latest
     name: "Validate"
     steps:
       - shell: bash
