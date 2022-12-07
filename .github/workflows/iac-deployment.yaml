@@ -11,7 +11,6 @@ env:
   ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
   ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
   ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
-  RESOURCES_PREFIX: ${{ steps.resources_prefix.outputs.result }}
 
 jobs:
   getResourcePrefix:
@@ -38,6 +37,8 @@ jobs:
           cd iac/terraform
           chmod u+x deploy.sh
           ./deploy.sh -l westeurope -c validate
+        env: 
+          RESOURCES_PREFIX: ${{ steps.resources_prefix.outputs.result }}
 
   deploy:
     name: "Deployment"
@@ -50,4 +51,6 @@ jobs:
           cd iac/terraform
           chmod u+x deploy.sh
           ./deploy.sh -l westeurope -c deploy
+        env: 
+          RESOURCES_PREFIX: ${{ steps.resources_prefix.outputs.result }}
         
