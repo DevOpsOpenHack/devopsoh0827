@@ -139,6 +139,8 @@ if [ ${COMMAND} == "validate" ]; then
 
     if [[ $? -eq 0 || $? -eq 2 ]]; then
         exit 0
+    else
+        exit 1
     fi
 elif [ ${COMMAND} == "deploy" ]; then
     azure_login
