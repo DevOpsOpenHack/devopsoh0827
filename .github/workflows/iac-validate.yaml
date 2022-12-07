@@ -1,7 +1,7 @@
 on:
   pull_request:
-    branches: [main]
-    types: [opened, reopened, review_requested]
+    branches: [ main ]
+    types: [ opened, reopened, review_requested ]
     paths:
       - 'iac/terraform/**'
 
@@ -42,3 +42,6 @@ jobs:
           ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
           ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
           RESOURCES_PREFIX: ${{ steps.resources_prefix.outputs.result }}
+          TF_VAR_docker_registry_server_url: ${{ secrets.REGISTRY_URL }}
+          TF_VAR_docker_registry_server_username: ${{ secrets.REGISTRY_USER }}
+          TF_VAR_docker_registry_server_password: ${{ secrets.REGISTRY_TOKEN }}
