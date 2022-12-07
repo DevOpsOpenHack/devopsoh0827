@@ -22,7 +22,7 @@ func TestLogMessagePrintToInfoLogUnit(t *testing.T) {
 
 	//assert
 	actual := fmt.Sprint(info)
-	assert.True(t, strings.Contains(actual, errorMessage))
+	assert.False(t, strings.Contains(actual, errorMessage))
 }
 
 func TestLogErrorPrintsMsgToInfoUnit(t *testing.T) {
