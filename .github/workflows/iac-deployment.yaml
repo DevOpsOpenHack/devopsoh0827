@@ -32,6 +32,8 @@ jobs:
     name: "Validate"
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v3
+
       - shell: bash
         run: |
           cd iac/terraform
@@ -46,6 +48,8 @@ jobs:
     environment: "production"
     needs: "validate"
     steps:
+      - uses: actions/checkout@v3
+      
       - shell: bash
         run: |
           cd iac/terraform
