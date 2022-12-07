@@ -3,7 +3,6 @@ name: Go package
 on:
   pull_request:
     branches: [main]
-    types: [opened, reopened, review_requested]
     paths:
       - 'apis/trips/**'
 
@@ -12,7 +11,7 @@ defaults:
     working-directory: apis/trips/
 
 jobs:
-  build:
+  test:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -30,3 +29,29 @@ jobs:
 
       - name: Test
         run: gotestsum --format standard-verbose --junitfile unittest_results.xml -- ./tripsgo -run Unit -coverprofile=unittest_coverage.out -covermode=count
+
+  report:
+    needs: [test]
+    runs-on: ubuntu-latest
+    if: failure()
+    steps:
+      - uses: actions/github-script@v6
+        with:
+          script: |
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: `### Unit Test 'failure'
+            <details>
+            <summary>Workflow details</summary>
+
+            Workflow name: ${{ github.workflow }}
+            Action: ${{ github.event_name }}
+            Job: ${{ github.job }}
+            PR: #${{ github.event.number }}
+            </details>
+
+            Test details: [Run #${{ github.run_id }}](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})
+            Pusher: @${{ github.actor }}`
+            })
