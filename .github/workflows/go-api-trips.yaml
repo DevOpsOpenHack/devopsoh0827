@@ -2,8 +2,7 @@ name: Go publish
 
 on:
   push:
-    branches: [ feature/pipeline-build-push-api-trips ]
-  workflow_dispatch:
+    branches: [ main ]
 
 permissions:
   contents: write
