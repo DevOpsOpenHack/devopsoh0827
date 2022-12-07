@@ -30,6 +30,7 @@ jobs:
           tags: ghcr.io/devopsopenhack/devopsoh0827/devopsoh/api-trips:${{ github.sha }}
   deploy:
     runs-on: ubuntu-latest
+    needs: [ build ]
     steps:
       - uses: azure/login@v1
         with:
