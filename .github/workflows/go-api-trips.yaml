@@ -25,4 +25,5 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           push: true
+          context: apis/trips/
           tags: ghcr.io/devopsopenhack/devopsoh0827/devopsoh/api-trips:${{ github.sha }}
