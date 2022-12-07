@@ -5,6 +5,7 @@ on:
     branches: [main]
     paths:
       - 'apis/trips/**'
+  workflow_dispatch:
 
 defaults:
   run:
