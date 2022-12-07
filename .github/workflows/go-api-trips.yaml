@@ -1,8 +1,10 @@
-name: Go publish
+name: Deploy api/trips
 
 on:
   push:
     branches: [ main ]
+    paths:
+      - 'apis/trips/**'
 
 permissions:
   contents: write
