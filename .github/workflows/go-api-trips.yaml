@@ -11,10 +11,6 @@ permissions:
   packages: write
   pull-requests: read
 
-defaults:
-  run:
-    working-directory: apis/trips/
-
 jobs:
   build:
     runs-on: ubuntu-latest
