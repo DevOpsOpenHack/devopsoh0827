@@ -28,3 +28,22 @@ jobs:
           push: true
           context: apis/trips/
           tags: ghcr.io/devopsopenhack/devopsoh0827/devopsoh/api-trips:${{ github.sha }}
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: azure/login@v1
+        with:
+          creds: '${{ secrets.AZURE_CREDENTIALS }}'
+      - name: Azure CLI script
+        uses: azure/CLI@v1
+        with:
+          azcliversion: 2.30.0
+          inlineScript: |
+            az webapp config container set --docker-custom-image-name 'devopsoh/api-trips:${{ github.sha }}' --name devopsoh06022trips --resource-group devopsoh06022rg --slot staging
+#      - name: Deploy to Azure Web App
+#        id: deploy-to-webapp
+#        uses: azure/webapps-deploy@0b651ed7546ecfc75024011f76944cb9b381ef1e
+#        with:
+#          app-name: ${{ env.AZURE_WEBAPP_NAME }}
+#          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
+#          images: 'ghcr.io/devopsopenhack/devopsoh0827/devopsoh/api-trips:${{ github.sha }}'
