@@ -2,7 +2,7 @@
 ## DATABASE                               ##
 ############################################
 
-adf "null_resource" "db_schema" {
+resource "null_resource" "db_schema" {
   depends_on = [
     azurerm_mssql_database.mssql_database
   ]
