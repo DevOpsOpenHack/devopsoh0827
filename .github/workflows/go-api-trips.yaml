@@ -29,4 +29,4 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           push: true
-          tags: ghcr.io/${{ github.repository }}/devopsoh/api-trips:${{ github.sha }}
+          tags: ghcr.io/devopsopenhack/devopsoh0827/devopsoh/api-trips:${{ github.sha }}
