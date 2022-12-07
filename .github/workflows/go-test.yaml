@@ -1,7 +1,9 @@
 name: Go package
 
 on:
-  push:
+  pull_request:
+    branches: [main]
+    types: [opened, reopened, review_requested]
     paths:
       - 'apis/trips/**'
 
