@@ -136,9 +136,14 @@ if [ ${COMMAND} == "validate" ]; then
     init_terrafrom
     validate_terraform
     preview_terraform
+
+    if [[ $? -eq 0 || $? -eq 2 ]]; then
+        exit 0
+    fi
 elif [ ${COMMAND} == "deploy" ]; then
     azure_login
     lint_terraform
+    preview_terraform
     deploy_terraform $?
 else
     echo "Please provide command"
