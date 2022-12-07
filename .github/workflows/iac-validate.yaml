@@ -1,8 +1,8 @@
 on:
   push:
-    branches: [ feature/actions ]
+    branches: []
   pull_request:
-    branches: [ main ]
+    branches: [main]
     types: [opened, reopened, review_requested]
 
 jobs:
