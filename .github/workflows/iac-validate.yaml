@@ -1,0 +1,44 @@
+on:
+  push:
+    branches: [ feature/actions ]
+  pull_request:
+    branches: [ main ]
+    types: [opened, reopened, review_requested]
+
+jobs:
+  getResourcePrefix:
+    runs-on: ubuntu-latest
+    name: "Get resource prefix"
+    outputs:
+      # Set output for next job
+      RESOURCES_PREFIX: ${{ steps.resources_prefix.outputs.result }}
+    steps:
+      # Get RESOURCES_PREFIX based on the repo name
+      - name: Get repo name
+        uses: actions/github-script@v5
+        id: resources_prefix
+        with:
+          result-encoding: string
+          script: return context.repo.repo.toLowerCase()
+
+  validate:
+    runs-on: ubuntu-latest
+    name: "Validate"
+    steps:
+      - uses: actions/checkout@v3
+      - shell: bash
+        run: |
+          ls -als
+          cd iac/terraform
+          chmod u+x deploy.sh
+          ./deploy.sh -l westeurope -c validate
+        env:
+          TFSTATE_STORAGE_ACCOUNT_NAME: ${{ secrets.TFSTATE_STORAGE_ACCOUNT_NAME }}
+          TFSTATE_STORAGE_CONTAINER_NAME: ${{ secrets.TFSTATE_STORAGE_CONTAINER_NAME }}
+          TFSTATE_KEY: ${{ secrets.TFSTATE_KEY }}
+          TFSTATE_RESOURCES_GROUP_NAME: ${{ secrets.TFSTATE_RESOURCES_GROUP_NAME }}
+          ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
+          ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
+          ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
+          ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
+          RESOURCES_PREFIX: ${{ steps.resources_prefix.outputs.result }}

@@ -3,7 +3,8 @@
 declare UNIQUER=""
 declare LOCATION=""
 declare RESOURCES_PREFIX=""
-declare -r USAGE_HELP="Usage: ./deploy.sh -l <LOCATION> [-u <UNIQUER> -r <RESOURCES_PREFIX>]"
+declare COMMAND=""
+declare -r USAGE_HELP="Usage: ./deploy.sh -l <LOCATION> -c <COMMAND> [-u <UNIQUER> -r <RESOURCES_PREFIX>]"
 
 _error() {
     echo "##[error] $@" 2>&1
@@ -15,7 +16,7 @@ if [ $# -eq 0 ]; then
 fi
 
 # Initialize parameters specified from command line
-while getopts ":l:u:r:" arg; do
+while getopts ":l:u:r:c:" arg; do
     case "${arg}" in
     l) # Process -l (LOCATION)
         LOCATION="${OPTARG}"
@@ -25,6 +26,9 @@ while getopts ":l:u:r:" arg; do
         ;;
     r) # Process -r (RESOURCES_PREFIX)
         RESOURCES_PREFIX="${OPTARG}"
+        ;;
+    c) # Process -c (COMMAND)
+        COMMAND="${OPTARG}"
         ;;
     \?)
         _error "Invalid options found: -${OPTARG}."
@@ -58,11 +62,6 @@ if [ -f "devvars.sh" ]; then
 fi
 
 azure_login() {
-    _azuresp_json=$(cat azuresp.json)
-    export ARM_CLIENT_ID=$(echo "${_azuresp_json}" | jq -r ".clientId")
-    export ARM_CLIENT_SECRET=$(echo "${_azuresp_json}" | jq -r ".clientSecret")
-    export ARM_SUBSCRIPTION_ID=$(echo "${_azuresp_json}" | jq -r ".subscriptionId")
-    export ARM_TENANT_ID=$(echo "${_azuresp_json}" | jq -r ".tenantId")
     az login --service-principal --username "${ARM_CLIENT_ID}" --password "${ARM_CLIENT_SECRET}" --tenant "${ARM_TENANT_ID}"
     az account set --subscription "${ARM_SUBSCRIPTION_ID}"
 }
@@ -131,14 +130,33 @@ test_deploy() {
     pwsh -Command ./smokeTest.ps1 -HostNames "${_hostnames}"
 }
 
-azure_login
+if [ ${COMMAND} == "validate" ]; then
+    azure_login
+    lint_terraform
+    init_terrafrom
+    validate_terraform
+    preview_terraform
 
-lint_terraform
-init_terrafrom
-# init_terrafrom_local
-validate_terraform
-preview_terraform
-deploy_terraform $?
+    if [[ $? -eq 0 || $? -eq 2 ]]; then
+        exit 0
+    else
+        exit 1
+    fi
+elif [ ${COMMAND} == "deploy" ]; then
+    azure_login
+    lint_terraform
+    preview_terraform
+    deploy_terraform $?
+else
+    echo "Please provide command"
+fi
+
+
+# init_terrafrom
+# # init_terrafrom_local
+
+# preview_terraform
+# deploy_terraform $?
 # destroy_terraform
 # deployment_output=$(terraform output -json)
 # hostnames=$(echo "${deployment_output}" | jq -r -c 'map(.value) | join(",")')
