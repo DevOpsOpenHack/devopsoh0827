@@ -145,6 +145,7 @@ if [ ${COMMAND} == "validate" ]; then
 elif [ ${COMMAND} == "deploy" ]; then
     azure_login
     lint_terraform
+    init_terrafrom
     preview_terraform
     deploy_terraform $?
 else
