@@ -1,0 +1,30 @@
+name: Go package
+
+on:
+  push:
+    paths:
+      - 'apis/trips/**'
+
+defaults:
+  run:
+    working-directory: apis/trips/
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Go
+        uses: actions/setup-go@v3
+        with:
+          go-version: 1.16
+      
+      - name: Install gotestsum
+        run: go install gotest.tools/gotestsum@latest
+
+      - name: Download dependencies
+        run: go mod download
+
+      - name: Test
+        run: gotestsum --format standard-verbose --junitfile unittest_results.xml -- ./tripsgo -run Unit -coverprofile=unittest_coverage.out -covermode=count
