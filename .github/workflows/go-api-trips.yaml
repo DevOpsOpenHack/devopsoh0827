@@ -40,7 +40,7 @@ jobs:
         with:
           azcliversion: 2.30.0
           inlineScript: |
-            az webapp config container set --docker-custom-image-name 'devopsoh/api-trips:${{ github.sha }}' --name devopsoh06022trips --resource-group devopsoh06022rg --slot staging
+            az webapp config container set --docker-custom-image-name 'ghcr.io/devopsopenhack/devopsoh0827/devopsoh/api-trips:${{ github.sha }}' --name devopsoh06022trips --resource-group devopsoh06022rg --slot staging
 #      - name: Deploy to Azure Web App
 #        id: deploy-to-webapp
 #        uses: azure/webapps-deploy@0b651ed7546ecfc75024011f76944cb9b381ef1e
