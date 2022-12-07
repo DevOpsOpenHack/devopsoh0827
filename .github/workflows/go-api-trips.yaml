@@ -2,7 +2,7 @@ name: Go package
 
 on:
   push:
-    branches: [ main ]
+    branches: [ feature/pipeline-build-push-api-trips ]
     paths:
       - 'apis/trips/**'
   workflow_dispatch:
