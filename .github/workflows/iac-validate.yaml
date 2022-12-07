@@ -1,4 +1,6 @@
 on:
+  push:
+    branches: [ feature/actions ]
   pull_request:
     branches: [ main ]
     types: [opened, reopened, review_requested]
