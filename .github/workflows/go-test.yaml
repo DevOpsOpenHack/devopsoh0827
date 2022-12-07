@@ -1,0 +1,66 @@
+name: Go package
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'apis/trips/**'
+  workflow_dispatch:
+
+defaults:
+  run:
+    working-directory: apis/trips/
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Go
+        uses: actions/setup-go@v3
+        with:
+          go-version: 1.16
+      
+      - name: Install gotestsum
+        run: go install gotest.tools/gotestsum@latest
+
+      - name: Download dependencies
+        run: go mod download
+
+      - name: Test
+        run: gotestsum --format standard-verbose --junitfile unittest_results.xml -- ./tripsgo -run Unit -coverprofile=unittest_coverage.out -covermode=count
+
+      - name: Test Report
+        uses: dorny/test-reporter@v1
+        if: success() || failure()
+        with:
+          name: Gotestsum
+          path: apis/trips/unittest_results.xml
+          reporter: java-junit
+
+  report:
+    needs: [test]
+    runs-on: ubuntu-latest
+    if: failure() && github.event_name == 'pull_request'
+    steps:
+      - uses: actions/github-script@v6
+        with:
+          script: |
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: `### Unit Test 'failure'
+            <details>
+            <summary>Workflow details</summary>
+
+            Workflow name: ${{ github.workflow }}
+            Action: ${{ github.event_name }}
+            Job: ${{ github.job }}
+            PR: #${{ github.event.number }}
+            </details>
+
+            Test details: [Run #${{ github.run_id }}](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})
+            Pusher: @${{ github.actor }}`
+            })
