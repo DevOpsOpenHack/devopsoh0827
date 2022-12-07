@@ -27,6 +27,7 @@ jobs:
     steps:
       - shell: bash
         run: |
+          ls -als
           cd iac/terraform
           chmod u+x deploy.sh
           ./deploy.sh -l westeurope -c validate
