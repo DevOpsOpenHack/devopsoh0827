@@ -11,16 +11,16 @@ import (
 
 func TestExecuteQueryInvalidDriverReturnsErr(t *testing.T) {
 	defer t.Cleanup(resetDataAccessEnvVars)
-	//arrange
+	// arrange
 	InitLogging(os.Stdout, os.Stdout, os.Stdout)
 	os.Setenv("SQL_DRIVER", "not_a_real_driver")
 	RebindDataAccessEnvironmentVariables()
-	//act
+	// act
 	var query = SelectAllTripsForUserQuery("someUser")
 
 	_, err := ExecuteQuery(query)
 
-	//assert
+	// assert
 	assert.NotNil(t, err)
 }
 func TestExecuteQueryConnectionSuccess(t *testing.T) {
