@@ -25,17 +25,17 @@ func TestExecuteQueryInvalidDriverReturnsErr(t *testing.T) {
 	assert.NotNil(t, err)
 }
 func TestExecuteQueryConnectionSuccess(t *testing.T) {
-	//act
+	// act
 	var query = SelectAllTripsForUserQuery("someUser")
 	trips, err := ExecuteQuery(query)
 
-	//assert
+	// assert
 	assert.NotNil(t, trips)
 	assert.Nil(t, err)
 }
 
 func TestExecuteQueryInvalidSqlReturnsErr(t *testing.T) {
-	//arrange
+	// arrange
 	InitLogging(os.Stdout, os.Stdout, os.Stdout)
 
 	//act
