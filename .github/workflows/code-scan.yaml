@@ -18,4 +18,4 @@ jobs:
 
       - name: Test
         run: |
-          gitleaks detect --verbose -c gitleaks.toml
+          gitleaks detect --no-git --verbose -c gitleaks.toml
