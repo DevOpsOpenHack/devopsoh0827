@@ -1,0 +1,4 @@
+iac/bicep/variables.json:generic-api-key:4
+iac/bicep/variables.json:generic-api-key:6
+apis/trips/tripsgo/versionService_test.go:common-passwords:21
+apis/trips/tripsgo/versionService_test.go:common-passwords:15
