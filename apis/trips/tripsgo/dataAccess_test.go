@@ -18,6 +18,7 @@ func TestExecuteQueryInvalidDriverReturnsErr(t *testing.T) {
 	//act
 	var query = SelectAllTripsForUserQuery("someUser")
 
+	//new comment
 	_, err := ExecuteQuery(query)
 
 	//assert
