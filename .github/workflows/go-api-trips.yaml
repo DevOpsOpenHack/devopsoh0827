@@ -55,13 +55,6 @@ jobs:
           retry-delay: 5s # Optional, only applicable to max-attempts > 1
           # Retry all errors, including 404. This option might trigger curl upgrade.
           retry-all: false # Optional, defaults to "false"
-#      - name: Deploy to Azure Web App
-#        id: deploy-to-webapp
-#        uses: azure/webapps-deploy@0b651ed7546ecfc75024011f76944cb9b381ef1e
-#        with:
-#          app-name: ${{ env.AZURE_WEBAPP_NAME }}
-#          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
-#          images: 'ghcr.io/devopsopenhack/devopsoh0827/devopsoh/api-trips:${{ github.sha }}'
   deploy_prod:
     name: "Prod Deployment"
     runs-on: ubuntu-latest
