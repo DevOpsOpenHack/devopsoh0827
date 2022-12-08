@@ -12,9 +12,10 @@ jobs:
     runs-on: ubuntu-latest
     container:
       image: zricethezav/gitleaks:latest
+      options: --user root
     steps:
       - uses: actions/checkout@v3
 
       - name: Test
         run: |
-          gitleaks detect --verbose --source="/path" -c /path/gitleaks.toml
+          gitleaks detect --verbose -c gitleaks.toml
