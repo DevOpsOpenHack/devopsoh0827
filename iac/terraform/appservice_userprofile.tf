@@ -4,8 +4,7 @@
 
 resource "azurerm_app_service" "app_service_api-userprofile" {
   depends_on = [
-    null_resource.db_datainit,
-    null_resource.docker_api-userprofile
+    null_resource.db_datainit
   ]
   name                = local.app_service_api-userprofile_name
   location            = azurerm_resource_group.resource_group.location

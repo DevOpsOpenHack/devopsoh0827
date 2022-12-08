@@ -4,8 +4,7 @@
 
 resource "azurerm_app_service" "app_service_api-poi" {
   depends_on = [
-    null_resource.db_datainit,
-    null_resource.docker_api-poi
+    null_resource.db_datainit
   ]
   name                = local.app_service_api-poi_name
   location            = azurerm_resource_group.resource_group.location

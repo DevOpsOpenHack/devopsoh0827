@@ -178,9 +178,6 @@ resource "azurerm_app_service_plan" "app_service_plan" {
 ############################################
 
 resource "azurerm_app_service" "app_service_tripviewer" {
-  depends_on = [
-    null_resource.docker_tripviewer
-  ]
   name                = local.app_service_tripviewer_name
   location            = azurerm_resource_group.resource_group.location
   resource_group_name = azurerm_resource_group.resource_group.name
